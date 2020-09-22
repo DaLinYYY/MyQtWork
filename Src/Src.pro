@@ -19,11 +19,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    mytimer.cpp
+    mytimer.cpp \
+    recvthread.cpp
 
 HEADERS += \
     mainwindow.h \
-    mytimer.h
+    mytimer.h \
+    recvthread.h
 
 FORMS += \
     mainwindow.ui

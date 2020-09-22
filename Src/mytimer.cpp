@@ -1,5 +1,6 @@
 #include "mytimer.h"
 #include <QtDebug>
+#include "mainwindow.h"
 using namespace std;
 
 mytimer::mytimer(QObject *parent) : QObject(parent)

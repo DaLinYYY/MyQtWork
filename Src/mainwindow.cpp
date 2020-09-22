@@ -13,6 +13,10 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     ,mySerialPort(new QSerialPort)
+    ,mySerialInfo(0)
+    ,myrecvThread(0)
+    ,recvBytes(0)
+    ,sendBytes(0)
     ,btnOpenIsOpen(false)
     ,timer(new QTimer)
     ,newPortStringList(new mPortList)
@@ -38,17 +42,6 @@ void MainWindow::initUi(void)
 {
     foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts())
     {
-#ifdef MY_DEBUG
-        qDebug() << "Name        : " << info.portName();
-        qDebug() << "Description : " << info.description();
-        qDebug() << "Manufacturer: " << info.manufacturer();
-
-//        qDebug() << info.serialNumber();
-//        qDebug() << info.systemLocation();
-//        qDebug() << info.vendorIdentifier();
-//        qDebug() << info.productIdentifier();
-//        qDebug() << info.availablePorts();
-#endif
         newPortStringList->ComName += info.portName();
         newPortStringList->Description += info.description();
         newPortStringList->Manufacturer += info.manufacturer();
@@ -87,25 +80,23 @@ void MainWindow::initSlot()
 
 void MainWindow::on_btnOpen_clicked()
 {
-//    if(btnOpenIsOpen == false)
-//    {
-//        btnOpenIsOpen = true;
-//        qDebug() << "false";
-//    }else{
-//        btnOpenIsOpen = false;
-//        qDebug() << "True";
-//    }
-
     if(btnOpenIsOpen == false)
     {
         btnOpenIsOpen = true;
         ui->btnOpen->setText(tr("Close"));
-        qDebug()<< "Close";
+//        qDebug()<< "Close";
+//        qDebug() << ui->comPort->currentText().split(":")[0];
+        mySerialInfo = new QSerialPortInfo(ui->comPort->currentText().split(":")[0]);
+        mySerialPort->setPort(*mySerialInfo);
+        mySerialPort->open(QIODevice::ReadWrite);
+
+
+
 
     }else{
         btnOpenIsOpen = false;
         ui->btnOpen->setText(tr("Open"));
-        qDebug() << "Open";
+//        qDebug() << "Open";
     }
 }
 
@@ -180,7 +171,7 @@ mPortList* MainWindow::CheckPortListDif(mPortList *newList, mPortList *oldList)
     return resList;
 }
 
-
+/*Serial port automatically refreshes*/
 void MainWindow::updateComShow()
 {
 //    qDebug() << "time test";
@@ -250,10 +241,8 @@ void MainWindow::updateComShow()
                 {
                     if(cStr == ui->comPort->itemText(i))
                         ui->comPort->removeItem(i);
-//                        qDebug() << "   remove:          " << ui->comPort->itemText(i);
                 }
             }
-//            qDebug() << "";
 
             break;
         }

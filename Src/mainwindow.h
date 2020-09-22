@@ -3,11 +3,12 @@
 
 #include "mytimer.h"
 #include <QMainWindow>
+#include "recvthread.h"
 #include <QTimer>
 #include <QtSerialPort/QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
 
-#define UPDATE_SHOW_TIME   1000
+#define UPDATE_SHOW_TIME   100
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -48,10 +49,18 @@ private:
 private:
     Ui::MainWindow *ui;
     QSerialPort *mySerialPort;
-    bool btnOpenIsOpen;
+    QSerialPortInfo *mySerialInfo;
+
     QTimer *timer;
     mPortList *newPortStringList;
     mPortList *oldPortStringList;
+
+    bool btnOpenIsOpen;
+    bool btnSendIsSend;
+    recvthread * myrecvThread;
+    recvthread * mysendThread;
+    unsigned int recvBytes;
+    unsigned int sendBytes;
 
 private slots:
     void on_btnOpen_clicked();

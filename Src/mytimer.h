@@ -3,9 +3,9 @@
 
 #include <QObject>
 #include <QTimer>
-#include "mainwindow.h"
 
-#define UPDATE_SHOW_TIME   1000
+
+//#define UPDATE_SHOW_TIME   1000
 
 class mytimer : public QObject
 {
