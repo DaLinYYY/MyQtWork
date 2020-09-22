@@ -13,11 +13,19 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
+enum PORT_CHANGE_STATUS{
+    NOT_CHANGE,
+    ADD_ITEM,
+    MINUS_ITEM,
+    ADD_TIEM_ALL,
+    MINUS_TIEM_ALL
+};
 
 typedef  struct{
     QStringList ComName;
     QStringList Description;
     QStringList Manufacturer;
+    int         PortChangeStatus;
 
 }mPortList;
 
@@ -33,6 +41,7 @@ public:
 private:
     void initUi();
     void initSlot();
+    mPortList* CheckPortListDif(mPortList *newList, mPortList *oldList);
 
 
 
