@@ -98,6 +98,12 @@ void MainWindow::initChartUi()
     series = new QLineSeries;
     m_chart->addSeries(series);
 
+    m_chart->createDefaultAxes();
+//    m_chart->axisY()->setRange(-10, 10);
+//    m_chart->axisX()->setRange(0, 100);
+
+//    m_chart->axisX()->setGridLineVisible(false);
+//    m_chart->axisY()->setGridLineVisible(true);
 
 /************************first***************************/
 #if 0
@@ -123,19 +129,23 @@ void MainWindow::initChartUi()
 #endif
 /*************************end**************************/
 
+
     QValueAxis *axisX = new QValueAxis;
-    axisX->setRange(0,maxSize);
+//    axisX->setTitleFont(QFont("Microsoft YaHei", 10, QFont::Normal, true));
+    axisX->setRange(0,100);
     axisX->setTitleText("time/us");
     m_chart->addAxis(axisX, Qt::AlignBottom);
 
 
     QValueAxis *axisY = new QValueAxis;
-    axisY->setRange(-0.5,4.0);
+//    axisY->setTitleFont(QFont("Microsoft YaHei", 10, QFont::Normal, true));
+    axisY->setRange(-10, 10);
     axisY->setTitleText("Voltage/V");
-
     m_chart->addAxis(axisY, Qt::AlignLeading);
-//    m_chart->legend()->hide();
-//    m_chart->setTitle("振动数据");
+
+    m_chart->legend()->hide();
+
+    m_chart->createDefaultAxes();
 
     QVBoxLayout *layout = ui->verticalLayout;
     layout->addWidget(chartView);
@@ -174,18 +184,14 @@ void MainWindow::updateData()
     if (oldData.size() < 100) {
         data = series->pointsVector();
     } else {
-        /* 添加之前老的数据到新的vector中，不复制最前的数据，即每次替换前面的数据
-         * 由于这里每次只添加1个数据，所以为1，使用时根据实际情况修改
-         */
+
         for (i = 1; i < oldData.size(); ++i) {
             data.append(QPointF(i - 1 , oldData.at(i).y()));
         }
     }
 
     qint64 size = data.size();
-    /* 这里表示插入新的数据，因为每次只插入1个，这里为i < 1,
-     * 但为了后面方便插入多个数据，先这样写
-     */
+
     for(i = 0; i < 1; ++i){
         data.append(QPointF(i + size, 10 * sin(M_PI * count * 4 / 180)));
     }
