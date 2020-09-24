@@ -15,7 +15,6 @@ void recvthread::startRecv(QSerialPort *port, int waitTimeout)
 {
     qDebug() << port->size();
     qDebug() << waitTimeout ;
-
 }
 
 void recvthread::read_dataSlot()

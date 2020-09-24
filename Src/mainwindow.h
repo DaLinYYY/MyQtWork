@@ -2,13 +2,23 @@
 #define MAINWINDOW_H
 
 #include "mytimer.h"
+#include "chartview.h"
+
 #include <QMainWindow>
 #include "recvthread.h"
 #include <QTimer>
 #include <QtSerialPort/QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
+#include <QtCharts/QChart>
+#include <QtCharts/QDateTimeAxis>
+#include <QtCharts/QChartView>
+#include <QtCharts/QLineSeries>
+#include <QtCharts/QValueAxis>
 
-#define UPDATE_SHOW_TIME   100
+QT_CHARTS_USE_NAMESPACE
+
+#define UPDATE_SHOW_TIME   10
+#define COM_REFRESH_TIME   100
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -42,7 +52,9 @@ public:
 private:
     void initUi();
     void initSlot();
+    void initChartUi();
     mPortList* CheckPortListDif(mPortList *newList, mPortList *oldList);
+    void wheelEvent(QWheelEvent *event);
 
 
 
@@ -51,7 +63,9 @@ private:
     QSerialPort *mySerialPort;
     QSerialPortInfo *mySerialInfo;
 
+    ChartView *chartView;
     QTimer *timer;
+    QTimer *timerShow;
     mPortList *newPortStringList;
     mPortList *oldPortStringList;
 
@@ -62,8 +76,14 @@ private:
     unsigned int recvBytes;
     unsigned int sendBytes;
 
+    quint16 count;
+
+    QChart *m_chart;
+    QLineSeries *m_series,*series;
+
 private slots:
     void on_btnOpen_clicked();
     void updateComShow();
+    void updateData();
 };
 #endif // MAINWINDOW_H

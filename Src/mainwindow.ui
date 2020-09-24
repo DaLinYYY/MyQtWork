@@ -6,36 +6,65 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>583</width>
-    <height>395</height>
+    <width>600</width>
+    <height>414</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>WinShow</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="btnOpen">
+   <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>250</x>
-      <y>20</y>
-      <width>81</width>
-      <height>21</height>
+      <x>10</x>
+      <y>70</y>
+      <width>571</width>
+      <height>291</height>
      </rect>
     </property>
-    <property name="text">
-     <string>Open</string>
-    </property>
+    <layout class="QVBoxLayout" name="verticalLayout"/>
    </widget>
-   <widget class="QComboBox" name="comPort">
+   <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>20</y>
-      <width>211</width>
-      <height>21</height>
+      <y>10</y>
+      <width>551</width>
+      <height>41</height>
      </rect>
     </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QComboBox" name="comPort"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnOpen">
+       <property name="text">
+        <string>Open</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::MinimumExpanding</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>80</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -43,7 +72,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>583</width>
+     <width>600</width>
      <height>23</height>
     </rect>
    </property>
