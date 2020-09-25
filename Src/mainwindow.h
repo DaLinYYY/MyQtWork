@@ -63,7 +63,7 @@ private:
     QSerialPort *mySerialPort;
     QSerialPortInfo *mySerialInfo;
 
-    ChartView *chartView;
+
     QTimer *timer;
     QTimer *timerShow;
     mPortList *newPortStringList;
@@ -78,7 +78,11 @@ private:
 
     quint16 count;
 
+//    ChartView *chartView;
+    ChartView *chartView;
     QChart *m_chart;
+    QValueAxis *m_axisX;
+    QValueAxis *m_axisY;
     QLineSeries *m_series,*series;
 
 private slots:

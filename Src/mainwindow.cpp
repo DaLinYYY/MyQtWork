@@ -14,17 +14,31 @@ int maxSize = 2000;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+
     ,mySerialPort(new QSerialPort)
     ,mySerialInfo(0)
-    ,myrecvThread(0)
-    ,recvBytes(0)
-    ,sendBytes(0)
-    ,count(0)
-    ,btnOpenIsOpen(false)
+
     ,timer(new QTimer)
     ,timerShow(new QTimer)
     ,newPortStringList(new mPortList)
     ,oldPortStringList(new mPortList)
+
+    ,btnOpenIsOpen(false)
+    ,btnSendIsSend(false)
+
+    ,myrecvThread(0)
+    ,mysendThread(0)
+    ,recvBytes(0)
+    ,sendBytes(0)
+
+    ,count(0)
+
+
+//    ,m_chartView(new ChartView)
+    ,m_chart(new QChart)
+    ,m_axisX(new QValueAxis())
+    ,m_axisY(new QValueAxis())
+    ,m_series(new QLineSeries)
 {
     ui->setupUi(this);
     this->initUi();
@@ -91,19 +105,36 @@ void MainWindow::initSlot()
 
 void MainWindow::initChartUi()
 {
-    m_chart = new QChart;
+//    m_chart = new QChart;
     chartView = new ChartView(m_chart);
-    chartView->setRubberBand(QChartView::RectangleRubberBand);
+    chartView->setRubberBand(QChartView::HorizontalRubberBand);
+
 
     series = new QLineSeries;
     m_chart->addSeries(series);
 
-    m_chart->createDefaultAxes();
-//    m_chart->axisY()->setRange(-10, 10);
-//    m_chart->axisX()->setRange(0, 100);
 
-//    m_chart->axisX()->setGridLineVisible(false);
-//    m_chart->axisY()->setGridLineVisible(true);
+//    m_axisX->setGridLineVisible(false);
+//    m_axisY->setGridLineVisible(true);
+
+//    m_axisX->setRange(0, 100);
+//    m_axisX->setTickCount(10);
+//    m_chart->addAxis(m_axisX, Qt::AlignBottom);
+
+//    m_axisY->setRange(-10, 10);
+//    m_chart->addAxis(m_axisY, Qt::AlignLeft);
+
+    m_chart->createDefaultAxes();
+
+
+    m_chart->axisX()->setGridLineVisible(false);
+    m_chart->axisY()->setGridLineVisible(true);
+
+    m_chart->axisY()->setRange(-10, 10);
+    m_chart->axisX()->setRange(0, 100);
+    m_chart->legend()->hide();
+    m_chart->setTheme(QChart::ChartThemeDark);
+
 
 /************************first***************************/
 #if 0
@@ -130,22 +161,22 @@ void MainWindow::initChartUi()
 /*************************end**************************/
 
 
-    QValueAxis *axisX = new QValueAxis;
+//    QValueAxis *axisX = new QValueAxis;
 //    axisX->setTitleFont(QFont("Microsoft YaHei", 10, QFont::Normal, true));
-    axisX->setRange(0,100);
-    axisX->setTitleText("time/us");
-    m_chart->addAxis(axisX, Qt::AlignBottom);
+//    axisX->setRange(0,100);
+//    axisX->setTitleText("time/us");
+//    m_chart->addAxis(axisX, Qt::AlignBottom);
 
 
-    QValueAxis *axisY = new QValueAxis;
+//    QValueAxis *axisY = new QValueAxis;
 //    axisY->setTitleFont(QFont("Microsoft YaHei", 10, QFont::Normal, true));
-    axisY->setRange(-10, 10);
-    axisY->setTitleText("Voltage/V");
-    m_chart->addAxis(axisY, Qt::AlignLeading);
+//    axisY->setRange(-10, 10);
+//    axisY->setTitleText("Voltage/V");
+//    m_chart->addAxis(axisY, Qt::AlignLeading);
 
-    m_chart->legend()->hide();
+//    m_chart->legend()->hide();
 
-    m_chart->createDefaultAxes();
+//    m_chart->createDefaultAxes();
 
     QVBoxLayout *layout = ui->verticalLayout;
     layout->addWidget(chartView);
@@ -181,7 +212,7 @@ void MainWindow::updateData()
     QVector<QPointF> oldData = series->pointsVector();
     QVector<QPointF> data;
 
-    if (oldData.size() < 100) {
+    if (oldData.size() < 300) {
         data = series->pointsVector();
     } else {
 
